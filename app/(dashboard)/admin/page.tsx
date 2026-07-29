@@ -1,77 +1,9 @@
-import {
-    ActionBar
-} from "@/components/auction/action-bar";
-import {
-    RealtimeRefresh
-} from "@/components/realtime/realtime-refresh";
-import {
-    BidPanel
-} from "@/components/auction/bid-panel";
-import {
-    PlayerCard
-} from "@/components/auction/player-card";
-import {
-    PurseTicker
-} from "@/components/auction/purse-ticker";
-import {
-    Shell
-} from "@/components/layout/shell";
-import {
-    getAuctionSnapshot
-} from "@/lib/auction-store";
-import {
-    formatINR
-} from "@/lib/utils";
-export default async function AdminPage() {
-        const {
-            auction: auctionState,
-            bids,
-            players,
-            teams
-        } = await getAuctionSnapshot();
-        const current =
-            players.find((player) => player.id === auctionState.currentPlayerId) ??
-            players[0] ??
-            null;
-
-        if (!current) {
-            return ( <
-                Shell >
-                <
-                RealtimeRefresh / >
-                <
-                div className = "flex min-h-[70vh] items-center justify-center" >
-                <
-                div className = "glass rounded-[2rem] p-10 text-center" >
-                <
-                h1 className = "text-3xl font-black" >
-                Welcome to EPL Auction <
-                /h1> <
-                p className = "mt-4 text-slate-300" >
-                No players have been imported yet. <
-                /p> <
-                p className = "mt-2 text-slate-400" >
-                Import your Registration CSV to begin. <
-                /p> <
-                /div> <
-                /div> <
-                /Shell>
-            );
-        }
-        return < Shell > < RealtimeRefresh / > < div className = "grid gap-6 xl:grid-cols-[1.2fr_.8fr]" > < div className = "space-y-6" > < div className = "glass rounded-[2rem] p-5" > < div className = "flex flex-wrap items-center justify-between gap-3" > < div > < p className = "text-sm uppercase tracking-[.25em] text-cyan-200/70" > Admin auction console < /p><h1 className="text-3xl font-black">{auctionState.mode === "captains" ? "Captain" : "Player"} auction is live</h1 > < /div><div className="rounded-2xl bg-white/
-        10 px - 4 py - 3 text - 2 xl font - black ">{auctionState.timerSeconds}s</div></div><div className="
-        mt - 4 "><ActionBar playerId={current.id} teamId={auctionState.currentBid?.teamId ?? teams[0]?.id ?? "
-        "} amount={auctionState.currentBid?.amount ?? current.basePrice} /></div></div><PlayerCard player={current} /><PurseTicker teams={teams} /></div><div className="
-        space - y - 6 "><BidPanel teams={teams} currentBid={auctionState.currentBid?.amount ?? null} mode={auctionState.mode} /><section className="
-        glass rounded - [2 rem] p - 5 "><h2 className="
-        mb - 4 text - xl font - black ">Player queue</h2>{players.map((player) => <div key={player.id} className="
-        mb - 3 flex items - center justify - between rounded - 2 xl bg - white / [.04] p - 3 "><span>{player.name}</span><span className="
-        rounded - full bg - white / 10 px - 2 py - 1 text - xs uppercase ">{player.status}</span></div>)}</section><section className="
-        glass rounded - [2 rem] p - 5 "><h2 className="
-        mb - 4 text - xl font - black ">Audit log</h2>{bids.map((bid) => <div key={bid.id} className="
-        mb - 3 rounded - 2 xl bg - white / [.04] p - 3 text - sm text - slate - 300 "><b className="
-        text - white ">{teams.find((team) => team.id === bid.teamId)?.name}</b> bid {formatINR(bid.amount)} for {current.name}<br />{new Date(bid.createdAt).toLocaleString()}</div>)}</section><section id="
-        imports " className="
-        glass rounded - [2 rem] p - 5 "><h2 className="
-        mb - 2 text - xl font - black ">Bulk imports</h2><p className="
-        text - sm text - slate - 300 ">Registration CSV, CricHeroes stats CSV, and kit image mapping endpoints are schema-ready.</p></section></div></div></Shell>; }
+import { ActionBar } from "@/components/auction/action-bar";
+import { RealtimeRefresh } from "@/components/realtime/realtime-refresh";
+import { BidPanel } from "@/components/auction/bid-panel";
+import { PlayerCard } from "@/components/auction/player-card";
+import { PurseTicker } from "@/components/auction/purse-ticker";
+import { Shell } from "@/components/layout/shell";
+import { getAuctionSnapshot } from "@/lib/auction-store";
+import { formatINR } from "@/lib/utils";
+export default async function AdminPage() { const { auction: auctionState, bids, players, teams } = await getAuctionSnapshot(); const current = players.find((player) => player.id === auctionState.currentPlayerId) ?? players[0]; return <Shell><RealtimeRefresh /><div className="grid gap-6 xl:grid-cols-[1.2fr_.8fr]"><div className="space-y-6"><div className="glass rounded-[2rem] p-5"><div className="flex flex-wrap items-center justify-between gap-3"><div><p className="text-sm uppercase tracking-[.25em] text-cyan-200/70">Admin auction console</p><h1 className="text-3xl font-black">{auctionState.mode === "captains" ? "Captain" : "Player"} auction is live</h1></div><div className="rounded-2xl bg-white/10 px-4 py-3 text-2xl font-black">{auctionState.timerSeconds}s</div></div><div className="mt-4"><ActionBar playerId={current.id} teamId={auctionState.currentBid?.teamId ?? teams[0]?.id ?? ""} amount={auctionState.currentBid?.amount ?? current.basePrice} /></div></div><PlayerCard player={current} /><PurseTicker teams={teams} /></div><div className="space-y-6"><BidPanel teams={teams} currentBid={auctionState.currentBid?.amount ?? null} mode={auctionState.mode} /><section className="glass rounded-[2rem] p-5"><h2 className="mb-4 text-xl font-black">Player queue</h2>{players.map((player) => <div key={player.id} className="mb-3 flex items-center justify-between rounded-2xl bg-white/[.04] p-3"><span>{player.name}</span><span className="rounded-full bg-white/10 px-2 py-1 text-xs uppercase">{player.status}</span></div>)}</section><section className="glass rounded-[2rem] p-5"><h2 className="mb-4 text-xl font-black">Audit log</h2>{bids.map((bid) => <div key={bid.id} className="mb-3 rounded-2xl bg-white/[.04] p-3 text-sm text-slate-300"><b className="text-white">{teams.find((team) => team.id === bid.teamId)?.name}</b> bid {formatINR(bid.amount)} for {current.name}<br />{new Date(bid.createdAt).toLocaleString()}</div>)}</section><section id="imports" className="glass rounded-[2rem] p-5"><h2 className="mb-2 text-xl font-black">Bulk imports</h2><p className="text-sm text-slate-300">Registration CSV, CricHeroes stats CSV, and kit image mapping endpoints are schema-ready.</p></section></div></div></Shell>; }
