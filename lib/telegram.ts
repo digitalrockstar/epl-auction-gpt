@@ -1,3 +1,8 @@
+import { getTelegramChatId, getTelegramToken } from "@/lib/env";
+
+export async function sendTelegramMessage(text: string) {
+  const token = getTelegramToken();
+  const chatId = getTelegramChatId();
 export async function sendTelegramMessage(text: string) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
