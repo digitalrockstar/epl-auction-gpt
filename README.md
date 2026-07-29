@@ -33,6 +33,7 @@ TELEGRAM_CHAT_ID=
 ```
 
 If Supabase variables are missing, the app falls back to mock data for UI dry runs. If Telegram variables are missing, notification sends are skipped safely.
+Production-ready Next.js auction platform for EPL cricket auctions with role-gated dashboards, Supabase-backed realtime state, admin auction controls, TV display, manager console, imports, audit logging, and Telegram notifications.
 
 ## Getting started
 
@@ -47,3 +48,4 @@ npm run dev
 npm run lint
 npm run build
 ```
+Copy `.env.example` to `.env.local` and set Supabase credentials before enabling auth-backed features.
