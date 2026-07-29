@@ -1,0 +1,5 @@
+import { Button } from "@/components/button";
+import { bidFloor, canBid, nextIncrement } from "@/lib/auction";
+import { formatINR } from "@/lib/utils";
+import type { AuctionMode, Team } from "@/lib/types";
+export function BidPanel({ teams, currentBid, mode }: { teams: Team[]; currentBid: number | null; mode: AuctionMode }) { const floor = bidFloor(currentBid, mode); return <section className="glass rounded-[2rem] p-5"><div className="mb-4 flex items-end justify-between"><div><p className="text-sm uppercase tracking-[.25em] text-cyan-200/70">Bid controls</p><h2 className="text-3xl font-black">Next floor {formatINR(floor)}</h2></div><p className="text-slate-300">+{formatINR(nextIncrement(currentBid ?? floor))}</p></div><div className="grid gap-3 sm:grid-cols-2">{teams.map((team) => { const eligible = canBid({ purseRemaining: team.purseRemaining, currentBid, mode, playersOwned: team.playersBought }); return <Button key={team.id} disabled={!eligible} className="justify-between bg-white/10 text-white shadow-none hover:bg-cyan-400 hover:text-slate-950"><span>{team.name}</span><span>{eligible ? formatINR(floor) : "Blocked"}</span></Button>; })}</div></section>; }
