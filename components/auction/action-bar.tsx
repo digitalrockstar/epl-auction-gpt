@@ -1,0 +1,4 @@
+"use client";
+import { useState } from "react";
+import { Button } from "@/components/button";
+export function ActionBar({ playerId, teamId, amount }: { playerId: string; teamId: string; amount: number }) { const [busy, setBusy] = useState(false); async function post(path: string) { setBusy(true); await fetch(path, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ playerId, teamId, amount, mode: "players" }) }); setBusy(false); } return <div className="grid grid-cols-2 gap-3 sm:grid-cols-4"><Button disabled={busy} onClick={() => post("/api/auction/sold")}>Mark Sold</Button><Button disabled={busy} onClick={() => post("/api/auction/sold")} className="bg-slate-500 text-white shadow-none">Unsold</Button><Button disabled={busy} className="bg-white/10 text-white shadow-none">Skip</Button><Button disabled={busy} className="bg-white/10 text-white shadow-none">Undo</Button></div>; }

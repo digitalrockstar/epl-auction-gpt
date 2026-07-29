@@ -1,0 +1,4 @@
+import { NextResponse } from "next/server";
+import { parseCsv, registrationRowSchema } from "@/lib/imports";
+import { createServiceClient } from "@/lib/supabase";
+export async function POST(request: Request) { const text = await request.text(); const rows = parseCsv(text).map((row) => registrationRowSchema.parse(row)); const supabase = createServiceClient(); if (!supabase) return NextResponse.json({ ok: true, simulated: true, imported: rows.length }); const payload = rows.map((row) => ({ phone: row.phone, name: row.name, role: row.role, batting_style: row.battingStyle, bowling_style: row.bowlingStyle, primary_skill: row.primarySkill, wants_captain: row.wantsCaptain, base_price: row.wantsCaptain ? 200000 : 50000 })); const { error } = await supabase.from("players").upsert(payload, { onConflict: "phone" }); if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 400 }); return NextResponse.json({ ok: true, imported: rows.length }); }

@@ -1,0 +1,4 @@
+import { z } from "zod";
+export const registrationRowSchema = z.object({ phone: z.string().min(6), name: z.string().min(1), role: z.string().min(1), battingStyle: z.string().optional(), bowlingStyle: z.string().optional(), primarySkill: z.string().min(1), wantsCaptain: z.coerce.boolean().default(false) });
+export const cricHeroesRowSchema = z.object({ phone: z.string().min(6), runs: z.coerce.number().optional(), wickets: z.coerce.number().optional(), strikeRate: z.coerce.number().optional(), economy: z.coerce.number().optional(), catches: z.coerce.number().optional() });
+export function parseCsv(text: string) { const [headerLine = "", ...lines] = text.trim().split(/\r?\n/); const headers = headerLine.split(",").map((header) => header.trim()); return lines.filter(Boolean).map((line) => Object.fromEntries(line.split(",").map((value, index) => [headers[index], value.trim()]))); }

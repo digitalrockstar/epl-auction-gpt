@@ -1,0 +1,4 @@
+import { NextResponse } from "next/server";
+import { createServiceClient } from "@/lib/supabase";
+import { sendTelegramMessage } from "@/lib/telegram";
+export async function POST(request: Request) { const body = await request.json(); const supabase = createServiceClient(); if (!supabase) return NextResponse.json({ ok: true, simulated: true }); await supabase.from("players").update({ status: "sold", team_id: body.teamId, sold_price: body.amount }).eq("id", body.playerId); await supabase.from("audit_logs").insert({ actor_id: body.actorId, action: "player_sold", entity_type: "player", entity_id: body.playerId, metadata: body }); await sendTelegramMessage(`SOLD: ${body.playerName ?? body.playerId} to ${body.teamName ?? body.teamId} for ${body.amount}`); return NextResponse.json({ ok: true }); }
