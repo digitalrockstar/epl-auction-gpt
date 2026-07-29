@@ -54,9 +54,4 @@ npm run dev
 npm run lint
 npm run build
 ```
-
-
-## Build stability
-
-Dependencies are pinned to Next.js 15 / React 19 instead of `latest` so Vercel does not unexpectedly upgrade the app to a newer major Next.js compiler during deployment.
 Copy `.env.example` to `.env.local` and set Supabase credentials before enabling auth-backed features.
